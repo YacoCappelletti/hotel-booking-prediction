@@ -1,0 +1,24 @@
+{
+  "project_name": "hotel-booking-cancelations-predict",
+  "environment": "development",
+  "random_seed": 42,
+  "paths": {
+    "raw_data": "data/raw/hotel_reservations.csv",
+    "processed_data": "data/processed",
+    "external_data": "data/external",
+    "configs": "configs",
+    "scripts": "scripts",
+    "src": "src",
+    "models": "models",
+    "tests": "tests",
+    "docs": "docs",
+    "docs_snippets": "docs/snippets",
+    "docs_json": "docs/json",
+    "docs_images": "docs/images"
+  },
+  "dataset": {
+    "file": "hotel_reservations.csv",
+    "source": "Hotel Reservations dataset (Kaggle)",
+    "id_column": "Booking_ID"
+  }
+}

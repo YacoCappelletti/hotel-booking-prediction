@@ -1,0 +1,475 @@
+{
+  "columns": [
+    {
+      "name": "Booking_ID",
+      "dtype": "str",
+      "description": "Unique booking identifier.",
+      "business_meaning": "Traceability key for each reservation record.",
+      "possible_values": "INN##### (unique per row)",
+      "missing_count": 0,
+      "unique_count": 36275,
+      "example_values": [
+        "INN00001",
+        "INN00002",
+        "INN00003"
+      ],
+      "usable_as_feature": "no",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Unique identifier with no predictive signal; excluded by policy."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "pseudonymous identifier"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "no_of_adults",
+      "dtype": "int64",
+      "description": "Number of adults in the booking.",
+      "business_meaning": "Party size; drives room allocation and pricing.",
+      "possible_values": "0-4 (int)",
+      "missing_count": 0,
+      "unique_count": 5,
+      "example_values": [
+        "2",
+        "1",
+        "3"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "no_of_children",
+      "dtype": "int64",
+      "description": "Number of children in the booking.",
+      "business_meaning": "Party composition; family segment indicator.",
+      "possible_values": "0-10 (int; values 9-10 are rare, likely entry errors)",
+      "missing_count": 0,
+      "unique_count": 6,
+      "example_values": [
+        "0",
+        "2",
+        "1"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "no_of_weekend_nights",
+      "dtype": "int64",
+      "description": "Number of weekend nights (Saturday/Sunday) booked.",
+      "business_meaning": "Stay length component; leisure-travel indicator.",
+      "possible_values": "0-7 (int)",
+      "missing_count": 0,
+      "unique_count": 8,
+      "example_values": [
+        "1",
+        "2",
+        "0"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "no_of_week_nights",
+      "dtype": "int64",
+      "description": "Number of week nights (Monday-Friday) booked.",
+      "business_meaning": "Stay length component; business-travel indicator.",
+      "possible_values": "0-17 (int)",
+      "missing_count": 0,
+      "unique_count": 18,
+      "example_values": [
+        "2",
+        "3",
+        "1"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "type_of_meal_plan",
+      "dtype": "str",
+      "description": "Meal plan selected by the guest.",
+      "business_meaning": "Ancillary spend and commitment signal.",
+      "possible_values": "Meal Plan 1, Meal Plan 2, Meal Plan 3, Not Selected",
+      "missing_count": 0,
+      "unique_count": 4,
+      "example_values": [
+        "Meal Plan 1",
+        "Not Selected",
+        "Meal Plan 2"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Selected at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "required_car_parking_space",
+      "dtype": "int64",
+      "description": "Whether the guest requires a parking space (0/1).",
+      "business_meaning": "Arrival-mode proxy; commitment signal.",
+      "possible_values": "0, 1",
+      "missing_count": 0,
+      "unique_count": 2,
+      "example_values": [
+        "0",
+        "1"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Requested at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "room_type_reserved",
+      "dtype": "str",
+      "description": "Room type reserved by the guest (anonymized categories).",
+      "business_meaning": "Product mix and price-tier proxy.",
+      "possible_values": "Room_Type 1..7",
+      "missing_count": 0,
+      "unique_count": 7,
+      "example_values": [
+        "Room_Type 1",
+        "Room_Type 4",
+        "Room_Type 2"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Chosen at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "lead_time",
+      "dtype": "int64",
+      "description": "Days between booking date and arrival date.",
+      "business_meaning": "Planning horizon; strong behavioral driver of cancellations.",
+      "possible_values": "0-443 (int)",
+      "missing_count": 0,
+      "unique_count": 352,
+      "example_values": [
+        "224",
+        "5",
+        "1"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Fully known at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "conditional (derived from an implicit booking date; the booking date itself is not in the data)"
+    },
+    {
+      "name": "arrival_year",
+      "dtype": "int64",
+      "description": "Year of arrival.",
+      "business_meaning": "Temporal context for seasonality and trend analysis.",
+      "possible_values": "2017, 2018",
+      "missing_count": 0,
+      "unique_count": 2,
+      "example_values": [
+        "2017",
+        "2018"
+      ],
+      "usable_as_feature": "conditional",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "yes"
+    },
+    {
+      "name": "arrival_month",
+      "dtype": "int64",
+      "description": "Month of arrival (1-12).",
+      "business_meaning": "Seasonality driver for demand and cancellations.",
+      "possible_values": "1-12 (int)",
+      "missing_count": 0,
+      "unique_count": 12,
+      "example_values": [
+        "10",
+        "11",
+        "2"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "yes"
+    },
+    {
+      "name": "arrival_date",
+      "dtype": "int64",
+      "description": "Day of month of arrival (1-31).",
+      "business_meaning": "Fine-grained timing; combined with year/month gives arrival day.",
+      "possible_values": "1-31 (int)",
+      "missing_count": 0,
+      "unique_count": 31,
+      "example_values": [
+        "2",
+        "6",
+        "28"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "yes"
+    },
+    {
+      "name": "market_segment_type",
+      "dtype": "str",
+      "description": "Market segment designation of the booking.",
+      "business_meaning": "Channel strategy; different segments show different cancellation behavior.",
+      "possible_values": "Online, Offline, Corporate, Complementary, Aviation",
+      "missing_count": 0,
+      "unique_count": 5,
+      "example_values": [
+        "Offline",
+        "Online",
+        "Corporate"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Assigned at booking time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "repeated_guest",
+      "dtype": "int64",
+      "description": "Whether the guest is a repeat customer (0/1).",
+      "business_meaning": "Loyalty signal; repeat guests behave differently.",
+      "possible_values": "0, 1",
+      "missing_count": 0,
+      "unique_count": 2,
+      "example_values": [
+        "0",
+        "1"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "conditional",
+        "reason": "Known at booking time for actual repeat guests; for new guests it is 0 by definition, which is valid at prediction time."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "behavioral"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "no_of_previous_cancellations",
+      "dtype": "int64",
+      "description": "Number of previous bookings canceled by this guest.",
+      "business_meaning": "Guest cancellation history; behavioral risk signal.",
+      "possible_values": "0-13 (int)",
+      "missing_count": 0,
+      "unique_count": 9,
+      "example_values": [
+        "0",
+        "3",
+        "1"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "conditional",
+        "reason": "Requires guest history lookup at prediction time; valid if history is available in production."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "behavioral"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "no_of_previous_bookings_not_canceled",
+      "dtype": "int64",
+      "description": "Number of previous bookings not canceled by this guest.",
+      "business_meaning": "Guest fulfillment history; reliability signal.",
+      "possible_values": "0-58 (int)",
+      "missing_count": 0,
+      "unique_count": 59,
+      "example_values": [
+        "0",
+        "5",
+        "1"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "conditional",
+        "reason": "Requires guest history lookup at prediction time; valid if history is available in production."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "behavioral"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "avg_price_per_room",
+      "dtype": "float64",
+      "description": "Average price per day of the reservation (EUR).",
+      "business_meaning": "Price sensitivity driver; direct revenue input.",
+      "possible_values": "0-540 (float; 0 for complementary stays)",
+      "missing_count": 0,
+      "unique_count": 3930,
+      "example_values": [
+        "65.0",
+        "106.68",
+        "60.0"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known at booking time (quoted rate)."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "no_of_special_requests",
+      "dtype": "int64",
+      "description": "Number of special requests made by the guest (e.g., high floor, view).",
+      "business_meaning": "Engagement/commitment signal.",
+      "possible_values": "0-5 (int)",
+      "missing_count": 0,
+      "unique_count": 6,
+      "example_values": [
+        "0",
+        "1",
+        "3"
+      ],
+      "usable_as_feature": "yes",
+      "candidate_target_flag": "no",
+      "leakage": {
+        "potential": "no",
+        "reason": "Known before arrival."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    },
+    {
+      "name": "booking_status",
+      "dtype": "str",
+      "description": "Final status of the booking: Canceled or Not_Canceled.",
+      "business_meaning": "Outcome of the reservation lifecycle; measures realized revenue loss when Canceled.",
+      "possible_values": "Canceled, Not_Canceled",
+      "missing_count": 0,
+      "unique_count": 2,
+      "example_values": [
+        "Not_Canceled",
+        "Canceled"
+      ],
+      "usable_as_feature": "no (outcome label)",
+      "candidate_target_flag": "yes (factual flag only \u2014 evaluation deferred to Phase 3)",
+      "leakage": {
+        "potential": "n/a",
+        "reason": "This is the outcome label, not a feature."
+      },
+      "pii": {
+        "sensitive": "no",
+        "category": "none"
+      },
+      "temporal": "no"
+    }
+  ]
+}

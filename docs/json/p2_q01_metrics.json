@@ -1,0 +1,20 @@
+{
+  "question": "What is the overall cancellation rate and how much revenue is at risk?",
+  "total_bookings": 36275,
+  "canceled_bookings": 11885,
+  "cancellation_rate": 0.3276,
+  "total_potential_revenue_eur": 11347279.0,
+  "lost_revenue_eur": 4296174.0,
+  "pct_revenue_at_risk": 0.3786,
+  "avg_booking_value_eur": 289.0,
+  "by_year": {
+    "2017": {
+      "rate": 0.1475,
+      "n": 6514
+    },
+    "2018": {
+      "rate": 0.3671,
+      "n": 29761
+    }
+  }
+}

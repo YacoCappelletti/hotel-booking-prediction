@@ -1,0 +1,36 @@
+{
+  "question": "How do market segments differ in cancellation behavior?",
+  "segments": [
+    {
+      "segment": "Online",
+      "cancellation_rate": 0.3651,
+      "n": 23214,
+      "avg_price_eur": 112.26
+    },
+    {
+      "segment": "Offline",
+      "cancellation_rate": 0.2995,
+      "n": 10528,
+      "avg_price_eur": 91.63
+    },
+    {
+      "segment": "Aviation",
+      "cancellation_rate": 0.296,
+      "n": 125,
+      "avg_price_eur": 100.7
+    },
+    {
+      "segment": "Corporate",
+      "cancellation_rate": 0.1091,
+      "n": 2017,
+      "avg_price_eur": 82.91
+    },
+    {
+      "segment": "Complementary",
+      "cancellation_rate": 0.0,
+      "n": 391,
+      "avg_price_eur": 3.14
+    }
+  ],
+  "interpretation": "Online bookings (64% of volume) cancel the most (~37%); Corporate cancels the least among paying segments (~11%); Complementary never cancels (free stays)."
+}

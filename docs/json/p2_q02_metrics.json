@@ -1,0 +1,37 @@
+{
+  "question": "How does lead time affect cancellation probability?",
+  "correlation_lead_time_cancel": 0.439,
+  "bands": [
+    {
+      "band": "1-7d",
+      "cancellation_rate": 0.0886,
+      "n": 5801
+    },
+    {
+      "band": "8-30d",
+      "cancellation_rate": 0.189,
+      "n": 6610
+    },
+    {
+      "band": "31-60d",
+      "cancellation_rate": 0.2347,
+      "n": 6307
+    },
+    {
+      "band": "61-90d",
+      "cancellation_rate": 0.278,
+      "n": 4508
+    },
+    {
+      "band": "91-180d",
+      "cancellation_rate": 0.449,
+      "n": 7772
+    },
+    {
+      "band": "181-443d",
+      "cancellation_rate": 0.7389,
+      "n": 5277
+    }
+  ],
+  "interpretation": "Cancellation rate rises monotonically with lead time: ~10% for bookings made within a week vs ~74% for bookings made more than 6 months ahead."
+}

@@ -1,0 +1,31 @@
+{
+  "source": "Phase 2 insights (p2_q01, p2_q02, p2_q03, p2_q04, p2_q05)",
+  "problem_type_hypothesis": "classification",
+  "risk_bands": [
+    {
+      "band": "low",
+      "max_probability": 0.25,
+      "recommendation": "No action needed. Standard confirmation flow.",
+      "justification": "Below the dataset base rate (~0.33) and consistent with observed low-risk profiles: lead time <= 30d, corporate segment, or 1+ special requests (Q02, Q03, Q05)."
+    },
+    {
+      "band": "medium",
+      "max_probability": 0.55,
+      "recommendation": "Send proactive reconfirmation + flexible-date incentive (e.g., free date change).",
+      "justification": "Mid-risk profiles: lead time 60-180d or online segment with no special requests (Q02: 28-45% observed rates in these bands)."
+    },
+    {
+      "band": "high",
+      "max_probability": 1.0,
+      "recommendation": "Assign retention workflow immediately: personal contact, deposit/penalty enforcement, and inventory reallocation review.",
+      "justification": "High-risk profiles: lead time > 180d with zero engagement signals (Q02: ~74% observed rate; Q05: zero special requests = 43% base risk)."
+    }
+  ],
+  "cost_matrix": {
+    "false_negative_cost": 10,
+    "false_positive_cost": 1,
+    "justification": "FN (missed cancellation): average booking value ~EUR 313 with ~38% of potential revenue lost (Q01); losing a room-night with no re-sell chance is expensive. FP (unnecessary retention action): cost of a reconfirmation call/incentive is small. Exact monetary calibration is unknown; 10:1 ratio documented as a conservative assumption pending finance validation.",
+    "assumption_note": "Bands and costs are assumptions derived from Phase 2 observed rates, not exact business figures."
+  },
+  "decision_threshold_policy": "Optimize the decision threshold on the validation set by minimizing expected cost using this cost matrix (never on the test set, G6)."
+}

@@ -1,0 +1,100 @@
+{
+  "question": "What is the revenue impact of cancellations by arrival month?",
+  "total_lost_revenue_eur": 4296174.0,
+  "top_loss_months": [
+    {
+      "month": 8,
+      "lost_revenue_eur": 626128.0,
+      "cancellation_rate": 0.3902,
+      "bookings": 3813
+    },
+    {
+      "month": 10,
+      "lost_revenue_eur": 620596.0,
+      "cancellation_rate": 0.3536,
+      "bookings": 5317
+    },
+    {
+      "month": 9,
+      "lost_revenue_eur": 607845.0,
+      "cancellation_rate": 0.3336,
+      "bookings": 4611
+    }
+  ],
+  "top3_months_share_of_lost_revenue": 0.4317,
+  "monthly": [
+    {
+      "month": 1,
+      "bookings": 1014,
+      "cancellation_rate": 0.0237,
+      "lost_revenue_eur": 4603.0
+    },
+    {
+      "month": 2,
+      "bookings": 1704,
+      "cancellation_rate": 0.2523,
+      "lost_revenue_eur": 121247.0
+    },
+    {
+      "month": 3,
+      "bookings": 2358,
+      "cancellation_rate": 0.2969,
+      "lost_revenue_eur": 245021.0
+    },
+    {
+      "month": 4,
+      "bookings": 2736,
+      "cancellation_rate": 0.3637,
+      "lost_revenue_eur": 327907.0
+    },
+    {
+      "month": 5,
+      "bookings": 2598,
+      "cancellation_rate": 0.3649,
+      "lost_revenue_eur": 354449.0
+    },
+    {
+      "month": 6,
+      "bookings": 3203,
+      "cancellation_rate": 0.4031,
+      "lost_revenue_eur": 440031.0
+    },
+    {
+      "month": 7,
+      "bookings": 2920,
+      "cancellation_rate": 0.45,
+      "lost_revenue_eur": 517432.0
+    },
+    {
+      "month": 8,
+      "bookings": 3813,
+      "cancellation_rate": 0.3902,
+      "lost_revenue_eur": 626128.0
+    },
+    {
+      "month": 9,
+      "bookings": 4611,
+      "cancellation_rate": 0.3336,
+      "lost_revenue_eur": 607845.0
+    },
+    {
+      "month": 10,
+      "bookings": 5317,
+      "cancellation_rate": 0.3536,
+      "lost_revenue_eur": 620596.0
+    },
+    {
+      "month": 11,
+      "bookings": 2980,
+      "cancellation_rate": 0.2936,
+      "lost_revenue_eur": 274608.0
+    },
+    {
+      "month": 12,
+      "bookings": 3021,
+      "cancellation_rate": 0.1331,
+      "lost_revenue_eur": 156309.0
+    }
+  ],
+  "interpretation": "Lost revenue concentrates in the high-season months (Aug/Oct peak in volume); the top-3 months account for a disproportionate share of the total loss."
+}

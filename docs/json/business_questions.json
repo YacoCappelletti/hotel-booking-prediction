@@ -1,0 +1,23 @@
+{
+  "phase": 2,
+  "all_questions": [
+    "What is the overall cancellation rate and how much revenue is at risk?",
+    "How does lead time affect cancellation probability?",
+    "How do market segments differ in cancellation behavior?",
+    "What is the revenue impact of cancellations by arrival month?",
+    "Do engagement and loyalty signals (special requests, repeated guest, history) reduce cancellations?",
+    "How does average room price vary by room type and segment, and does price relate to cancellations?",
+    "Does stay length (week vs weekend nights) relate to cancellation behavior?",
+    "How does demand vary by month and year (seasonality of booking volume)?",
+    "Does previous cancellation history predict future cancellation behavior?",
+    "What is the profile of bookings with 0 nights or 0 guests (data anomalies with operational cost)?"
+  ],
+  "selected_questions": [
+    {"id": "q01", "question": "What is the overall cancellation rate and how much revenue is at risk?", "script": "scripts/p2_q01_cancellation_rate_overview.py", "selection_criteria": ["business_impact", "feasibility", "actionability"]},
+    {"id": "q02", "question": "How does lead time affect cancellation probability?", "script": "scripts/p2_q02_lead_time_vs_cancellation.py", "selection_criteria": ["business_impact", "feasibility", "actionability"]},
+    {"id": "q03", "question": "How do market segments differ in cancellation behavior?", "script": "scripts/p2_q03_market_segment_behavior.py", "selection_criteria": ["business_impact", "feasibility", "actionability"]},
+    {"id": "q04", "question": "What is the revenue impact of cancellations by arrival month?", "script": "scripts/p2_q04_revenue_impact_of_cancellations.py", "selection_criteria": ["business_impact", "feasibility", "actionability"]},
+    {"id": "q05", "question": "Do engagement and loyalty signals (special requests, repeated guest, history) reduce cancellations?", "script": "scripts/p2_q05_seasonality_and_special_requests.py", "selection_criteria": ["business_impact", "feasibility", "actionability"]}
+  ],
+  "g1_note": "Prioritization applies to business questions only. No target variable candidate was ranked, selected, or proposed in Phase 2."
+}

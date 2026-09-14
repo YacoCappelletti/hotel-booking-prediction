@@ -1,0 +1,58 @@
+{
+  "question": "Do engagement and loyalty signals reduce cancellation probability?",
+  "cancel_rate_by_special_requests": [
+    {
+      "requests": 0,
+      "rate": 0.4321,
+      "n": 19777
+    },
+    {
+      "requests": 1,
+      "rate": 0.2377,
+      "n": 11373
+    },
+    {
+      "requests": 2,
+      "rate": 0.146,
+      "n": 4364
+    },
+    {
+      "requests": 3,
+      "rate": 0.0,
+      "n": 675
+    },
+    {
+      "requests": 4,
+      "rate": 0.0,
+      "n": 78
+    },
+    {
+      "requests": 5,
+      "rate": 0.0,
+      "n": 8
+    }
+  ],
+  "cancel_rate_by_repeated_guest": {
+    "new_guest": 0.3358,
+    "repeated_guest": 0.0172
+  },
+  "cancel_rate_by_previous_cancellations": [
+    {
+      "prev_cancellations": "0",
+      "rate": 0.3303,
+      "n": 35937
+    },
+    {
+      "prev_cancellations": "1",
+      "rate": 0.0556,
+      "n": 198
+    },
+    {
+      "prev_cancellations": "2",
+      "rate": 0.0357,
+      "n": 140
+    }
+  ],
+  "correlation_special_requests_cancel": -0.253,
+  "interpretation": "Every additional special request lowers cancellation risk (43% -> 0% from 0 to 3+ requests); repeated guests cancel at 1.7% vs 33.6% for new guests; guests with any prior cancellation are far less likely to cancel again than first-timers with none."
+}

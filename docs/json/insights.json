@@ -1,0 +1,61 @@
+{
+  "phase": 2,
+  "insights": [
+    {
+      "id": "insight_01",
+      "question": "What is the overall cancellation rate and how much revenue is at risk?",
+      "business_relevance": "Sizes the core problem in monetary terms; baseline for all mitigation ROI calculations.",
+      "code": "scripts/p2_q01_cancellation_rate_overview.py",
+      "output": "docs/snippets/p2_q01_output.md",
+      "metrics": "docs/json/p2_q01_metrics.json",
+      "finding": "32.76% of 36,275 bookings cancel; EUR 4.30M of EUR 11.35M potential revenue (37.9%) is at risk; average booking value ~EUR 313.",
+      "interpretation": "Cancellation is not a marginal nuisance: over a third of bookings and nearly 4 of every 10 revenue euros are exposed. Even a partial reduction translates into millions of EUR.",
+      "recommended_action": "Stand up a cancellation-risk scoring process integrated into the reservation workflow, prioritizing high-value, long-lead bookings."
+    },
+    {
+      "id": "insight_02",
+      "question": "How does lead time affect cancellation probability?",
+      "business_relevance": "Lead time is the strongest single behavioral driver and defines when interventions should trigger.",
+      "code": "scripts/p2_q02_lead_time_vs_cancellation.py",
+      "output": "docs/snippets/p2_q02_output.md",
+      "metrics": "docs/json/p2_q02_metrics.json",
+      "finding": "Monotonic relationship: 9.9% (1-7d) -> 18.9% (8-30d) -> 23.5% (31-60d) -> 27.8% (61-90d) -> 44.9% (91-180d) -> 73.9% (181-443d). Correlation 0.439.",
+      "interpretation": "Long-horizon plans are fragile. Bookings made >6 months ahead cancel at ~7x the rate of last-minute bookings.",
+      "recommended_action": "Tiered reconfirmation policy by lead-time band; mandatory deposit or non-refundable option for 180+ day bookings."
+    },
+    {
+      "id": "insight_03",
+      "question": "How do market segments differ in cancellation behavior?",
+      "business_relevance": "Channel-specific risk concentration enables targeted commercial policies.",
+      "code": "scripts/p2_q03_market_segment_behavior.py",
+      "output": "docs/snippets/p2_q03_output.md",
+      "metrics": "docs/json/p2_q03_metrics.json",
+      "finding": "Online: 36.5% cancel rate on 64% of volume (23,214 bookings). Offline: 29.9%. Aviation: 29.6%. Corporate: 10.9%. Complementary: 0%.",
+      "interpretation": "The riskiest channel is also the biggest: online OTA-style bookings dominate volume and cancellation risk simultaneously. Corporate bookings are ~3x safer.",
+      "recommended_action": "For online bookings: require partial prepayment or stricter free-cancellation windows; promote corporate/contracted segments in high season."
+    },
+    {
+      "id": "insight_04",
+      "question": "What is the revenue impact of cancellations by arrival month?",
+      "business_relevance": "Converts behavior into seasonal financial exposure; tells the business when to act.",
+      "code": "scripts/p2_q04_revenue_impact_of_cancellations.py",
+      "output": "docs/snippets/p2_q04_output.md",
+      "metrics": "docs/json/p2_q04_metrics.json",
+      "finding": "Total lost revenue EUR 4.30M; the top-3 loss months concentrate 43.2% of the total loss, driven by peak volume (Aug-Oct) combined with elevated cancellation rates (~35-40%).",
+      "interpretation": "Seasonal peaks amplify losses: more bookings x high cancel rate = concentrated exposure. October alone carries a disproportionate share.",
+      "recommended_action": "Apply stricter cancellation terms and proactive overbooking buffers during peak months (Aug-Oct); front-load retention campaigns ahead of them."
+    },
+    {
+      "id": "insight_05",
+      "question": "Do engagement and loyalty signals reduce cancellation probability?",
+      "business_relevance": "These signals are free, collected at booking time, and highly predictive.",
+      "code": "scripts/p2_q05_seasonality_and_special_requests.py",
+      "output": "docs/snippets/p2_q05_output.md",
+      "metrics": "docs/json/p2_q05_metrics.json",
+      "finding": "Cancel rate by special requests: 43.2% (0) -> 23.8% (1) -> 14.6% (2) -> 0% (3+). Repeated guests: 1.7% vs 33.6% new guests. Correlation -0.253.",
+      "interpretation": "Every engagement signal is protective. A booking with zero special requests from a first-time guest is the archetypal high-risk profile.",
+      "recommended_action": "Nudge guests to add preferences/requests at booking (upsell + retention); prioritize zero-request, first-time, long-lead bookings for reconfirmation."
+    }
+  ],
+  "g1_note": "No target variable was selected, ranked, or proposed in Phase 2 (G1)."
+}
