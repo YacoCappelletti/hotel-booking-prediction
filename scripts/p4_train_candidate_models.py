@@ -1,22 +1,21 @@
-"""Phase 4 step 2: candidate model training, selection, threshold optimization,
+"""Step 2: candidate model training, selection, threshold optimization,
 explainer, and artifact persistence.
 
-- Time-based split (approved): train 70% / validation 15% / test 15% by arrival date.
-- Preprocessing fit ONLY on train.
-- Candidates cross-validated on train (StratifiedKFold, seed from model_config).
-- Best model selected on VALIDATION by PR-AUC (business-aligned, imbalanced data).
-- Decision threshold optimized on VALIDATION with the cost matrix from
-  configs/business_rules.json (G6: test set is NEVER used here).
-- SHAP explainer persisted for per-prediction contributing factors.
-
-The test set is not touched by this script; it is evaluated exactly once by
-scripts/p4_evaluate_final_model.py (G6).
+- Time-based split: train 70% / validation 15% / test 15% by arrival date.
+- Preprocessing is re-fit inside every cross-validation fold (no leakage).
+- Candidates are cross-validated on train (StratifiedKFold, seed from
+  model_config.json); the best configuration per family is refit on the full
+  train set and compared on VALIDATION by PR-AUC.
+- The decision threshold is optimized on VALIDATION with the cost matrix from
+  configs/business_rules.json. The test set is never used for selection or
+  tuning; it is evaluated exactly once by scripts/p4_evaluate_final_model.py.
+- A SHAP explainer is persisted for per-prediction contributing factors.
 """
 
 import itertools
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import joblib
@@ -38,11 +37,11 @@ from sklearn.metrics import (
     brier_score_loss,
     confusion_matrix,
     f1_score,
+    precision_recall_curve,
     precision_score,
     recall_score,
     roc_auc_score,
     roc_curve,
-    precision_recall_curve,
 )
 from sklearn.model_selection import StratifiedKFold
 from sklearn.pipeline import Pipeline
@@ -52,10 +51,13 @@ from sklearn.tree import DecisionTreeClassifier
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.features.build_features import (
+from src.features.build_features import (  # noqa: E402
     CATEGORICAL_FEATURES,
     FEATURES,
     NUMERIC_FEATURES,
+    POSITIVE_LABEL,
+    TARGET,
+    arrival_datetime,
     class_sample_weights,
     load_raw,
     temporal_split,
@@ -64,7 +66,6 @@ from src.features.build_features import (
 
 MODEL_CONFIG = json.loads((ROOT / "configs" / "model_config.json").read_text())
 BUSINESS_RULES = json.loads((ROOT / "configs" / "business_rules.json").read_text())
-APPROVAL = json.loads((ROOT / "docs" / "json" / "target_approval.json").read_text())
 DOCS_JSON = ROOT / "docs" / "json"
 IMAGES = ROOT / "docs" / "images"
 MODELS = ROOT / "models"
@@ -73,55 +74,41 @@ SEED = MODEL_CONFIG["random_seed"]
 FOLDS = MODEL_CONFIG["cv"]["folds"]
 np.random.seed(SEED)
 
-# ---- G4 gate: verify approval before anything else ----
-assert APPROVAL["approval_status"] == "approved", (
-    "G4 violated: target_approval.json is not approved. Phase 4 must stop."
-)
-assert "classification" in APPROVAL["approved_problem_type"], (
-    "Approved problem type is not classification."
-)
+
+def make_preprocessor() -> ColumnTransformer:
+    """Fresh, unfitted preprocessing transformer (one per pipeline/fold)."""
+    return ColumnTransformer(
+        transformers=[
+            (
+                "num",
+                Pipeline(
+                    [
+                        ("imputer", SimpleImputer(strategy="median")),
+                        ("scaler", StandardScaler()),
+                    ]
+                ),
+                NUMERIC_FEATURES,
+            ),
+            (
+                "cat",
+                Pipeline(
+                    [
+                        ("imputer", SimpleImputer(strategy="most_frequent")),
+                        ("onehot", OneHotEncoder(handle_unknown="ignore")),
+                    ]
+                ),
+                CATEGORICAL_FEATURES,
+            ),
+        ],
+        remainder="drop",
+    )
+
 
 # ---- Data ----
 df = load_raw()
-train, val, _test = temporal_split(df)  # _test deliberately unused here (G6)
+train, val, _test = temporal_split(df)  # _test deliberately unused here
 X_train, y_train = xy(train)
 X_val, y_val = xy(val)
-
-# ---- Preprocessing (fit on train only) ----
-preprocessor = ColumnTransformer(
-    transformers=[
-        (
-            "num",
-            Pipeline(
-                [
-                    ("imputer", SimpleImputer(strategy="median")),
-                    ("scaler", StandardScaler()),
-                ]
-            ),
-            NUMERIC_FEATURES,
-        ),
-        (
-            "cat",
-            Pipeline(
-                [
-                    ("imputer", SimpleImputer(strategy="most_frequent")),
-                    ("onehot", OneHotEncoder(handle_unknown="ignore")),
-                ]
-            ),
-            CATEGORICAL_FEATURES,
-        ),
-    ],
-    remainder="drop",
-)
-preprocessor.fit(X_train)
-X_train_t = preprocessor.transform(X_train)
-X_val_t = preprocessor.transform(X_val)
-feature_names = list(preprocessor.get_feature_names_out())
-
-
-def get_feature_label(name: str) -> str:
-    return name.split("__", 1)[-1]
-
 
 # ---- Candidate model specifications ----
 SPECS = {
@@ -137,7 +124,7 @@ SPECS = {
             class_weight="balanced", random_state=SEED, **p
         ),
         [
-            dict(zip(("max_depth", "min_samples_leaf"), combo))
+            dict(zip(("max_depth", "min_samples_leaf"), combo, strict=True))
             for combo in itertools.product(
                 MODEL_CONFIG["hyperparameter_grids"]["DecisionTreeClassifier"][
                     "max_depth"
@@ -153,7 +140,7 @@ SPECS = {
             class_weight="balanced", random_state=SEED, n_jobs=-1, **p
         ),
         [
-            dict(zip(("n_estimators", "max_depth", "min_samples_leaf"), combo))
+            dict(zip(("n_estimators", "max_depth", "min_samples_leaf"), combo, strict=True))
             for combo in itertools.product(
                 MODEL_CONFIG["hyperparameter_grids"]["RandomForestClassifier"][
                     "n_estimators"
@@ -170,7 +157,7 @@ SPECS = {
     "GradientBoostingClassifier": (
         lambda p: GradientBoostingClassifier(random_state=SEED, **p),
         [
-            dict(zip(("n_estimators", "learning_rate", "max_depth"), combo))
+            dict(zip(("n_estimators", "learning_rate", "max_depth"), combo, strict=True))
             for combo in itertools.product(
                 MODEL_CONFIG["hyperparameter_grids"]["GradientBoostingClassifier"][
                     "n_estimators"
@@ -189,19 +176,24 @@ GB_FAMILY = {"GradientBoostingClassifier"}
 sample_weights_train = class_sample_weights(y_train)
 
 
-def cv_evaluate(name: str, model, params: dict) -> dict:
-    """5-fold StratifiedKFold CV on train with PR-AUC as the primary metric."""
+def cv_evaluate(name: str, params: dict) -> dict:
+    """5-fold StratifiedKFold CV on train; preprocessing fit per fold."""
     skf = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=SEED)
+    factory, _ = SPECS[name]
     scores = []
     for tr_idx, hold_idx in skf.split(np.zeros(len(y_train)), y_train):
-        m = model.__class__(**{**model.get_params(), **params})
-        Xh_tr, Xh_hold = X_train_t[tr_idx], X_train_t[hold_idx]
+        pipe = Pipeline([("pre", make_preprocessor()), ("model", factory(params))])
+        Xh_tr, Xh_hold = X_train.iloc[tr_idx], X_train.iloc[hold_idx]
         yh_tr, yh_hold = y_train.iloc[tr_idx], y_train.iloc[hold_idx]
         if name in GB_FAMILY:
-            m.fit(Xh_tr, yh_tr, sample_weight=class_sample_weights(yh_tr))
+            pipe.fit(
+                Xh_tr,
+                yh_tr,
+                model__sample_weight=class_sample_weights(yh_tr),
+            )
         else:
-            m.fit(Xh_tr, yh_tr)
-        probs = m.predict_proba(Xh_hold)[:, 1]
+            pipe.fit(Xh_tr, yh_tr)
+        probs = pipe.predict_proba(Xh_hold)[:, 1]
         scores.append(average_precision_score(yh_hold, probs))
     return {
         "mean": float(np.mean(scores)),
@@ -212,10 +204,10 @@ def cv_evaluate(name: str, model, params: dict) -> dict:
 
 # ---- Train + CV all candidates ----
 results = []
-for name, (factory, grid) in SPECS.items():
-    best_for_model = None
+for name, (_factory, grid) in SPECS.items():
+    best_for_model: dict | None = None
     for params in grid:
-        cv = cv_evaluate(name, factory(params), params)
+        cv = cv_evaluate(name, params)
         rec = {
             "model": name,
             "params": params,
@@ -229,7 +221,19 @@ for name, (factory, grid) in SPECS.items():
         f"{name}: best CV PR-AUC = {best_for_model['cv_mean']:.4f} with {best_for_model['params']}"
     )
 
-# Refit best config per model on full train, evaluate on validation
+# ---- Final preprocessing fitted on full train ----
+preprocessor = make_preprocessor()
+preprocessor.fit(X_train)
+X_train_t = preprocessor.transform(X_train)
+X_val_t = preprocessor.transform(X_val)
+feature_names = list(preprocessor.get_feature_names_out())
+
+
+def get_feature_label(name: str) -> str:
+    return name.split("__", 1)[-1]
+
+
+# Refit best config per model on the full transformed train, evaluate on validation
 validation_table = []
 fitted = {}
 for name, (factory, _grid) in SPECS.items():
@@ -277,9 +281,6 @@ costs = [
     for t in thresholds
 ]
 best_threshold = float(thresholds[int(np.argmin(costs))])
-default_cost = (
-    fn_cost * (y_val == 1).sum()
-)  # threshold 0 cost (predict all positive = FN 0, FP = all negatives)
 print(
     f"Cost-optimal threshold on validation: {best_threshold:.3f} "
     f"(cost {min(costs):.0f} vs default 0.5 cost "
@@ -308,7 +309,7 @@ final_val_metrics = {
 print(f"Validation metrics at threshold: {final_val_metrics}")
 
 # ---- Global feature importance: permutation importance on validation ----
-from sklearn.inspection import permutation_importance
+from sklearn.inspection import permutation_importance  # noqa: E402
 
 perm = permutation_importance(
     best_model,
@@ -326,7 +327,7 @@ importance = sorted(
             "importance_mean": round(float(m), 5),
             "importance_std": round(float(s), 5),
         }
-        for f, m, s in zip(feature_names, perm.importances_mean, perm.importances_std)
+        for f, m, s in zip(feature_names, perm.importances_mean, perm.importances_std, strict=True)
     ],
     key=lambda x: x["importance_mean"],
     reverse=True,
@@ -334,19 +335,17 @@ importance = sorted(
 
 # ---- SHAP explainer (persisted for per-prediction contributing factors) ----
 background = shap.utils.sample(X_train_t, 500, random_state=SEED)
+masker = shap.maskers.Independent(background, max_samples=500)
 if best_name == "LogisticRegression":
     explainer = shap.LinearExplainer(
         best_model, background, feature_names=feature_names
     )
 else:
-    explainer = shap.TreeExplainer(
-        best_model, data=background, feature_names=feature_names
-    )
+    explainer = shap.TreeExplainer(best_model, data=masker, feature_names=feature_names)
 
-# ---- Charts (validation only; G6-safe) ----
+# ---- Charts (validation only) ----
 IMAGES.mkdir(parents=True, exist_ok=True)
 fig, axes = plt.subplots(2, 2, figsize=(14, 11))
-# ROC curves
 for name, model in fitted.items():
     p = model.predict_proba(X_val_t)[:, 1]
     fpr, tpr, _ = roc_curve(y_val, p)
@@ -356,7 +355,6 @@ axes[0, 0].set_title("ROC curves (validation)")
 axes[0, 0].set_xlabel("FPR")
 axes[0, 0].set_ylabel("TPR")
 axes[0, 0].legend(fontsize=8)
-# PR curves
 for name, model in fitted.items():
     p = model.predict_proba(X_val_t)[:, 1]
     prec, rec, _ = precision_recall_curve(y_val, p)
@@ -368,7 +366,6 @@ axes[0, 1].set_title("Precision-Recall curves (validation)")
 axes[0, 1].set_xlabel("Recall")
 axes[0, 1].set_ylabel("Precision")
 axes[0, 1].legend(fontsize=8)
-# Confusion matrix at chosen threshold
 cm_arr = np.array(
     [
         [
@@ -387,7 +384,6 @@ for (i, j), v in np.ndenumerate(cm_arr):
 axes[1, 0].set_xticks([0, 1], ["Pred 0", "Pred 1"])
 axes[1, 0].set_yticks([0, 1], ["True 0", "True 1"])
 axes[1, 0].set_title(f"Confusion matrix (validation, threshold={best_threshold:.2f})")
-# Calibration
 frac_pos, mean_pred = calibration_curve(
     y_val, val_probs, n_bins=10, strategy="quantile"
 )
@@ -423,20 +419,26 @@ joblib.dump(
     MODELS / "explainer.joblib",
 )
 
-approval_ref = {
-    "path": "docs/json/target_approval.json",
-    "approval_timestamp": APPROVAL["approval_timestamp"],
-}
+
+def period_label(part: pd.DataFrame) -> str:
+    dates = arrival_datetime(part)
+    return f"{dates.min():%b %Y} - {dates.max():%b %Y}"
+
+
 metadata = {
     "model_name": best_name,
-    "model_version": "1.0.0",
-    "approved_target": APPROVAL["approved_target"],
-    "problem_type": APPROVAL["approved_problem_type"],
-    "target_approval_reference": approval_ref,
-    "training_timestamp": datetime.now(timezone.utc).isoformat(),
+    "model_version": "1.1.0",
+    "target": TARGET,
+    "positive_class": POSITIVE_LABEL,
+    "problem_type": "binary classification",
+    "training_timestamp": datetime.now(UTC).isoformat(),
     "random_seed": SEED,
     "feature_list": FEATURES,
-    "engineered_features": ["total_nights = no_of_week_nights + no_of_weekend_nights"],
+    "engineered_features": [
+        "total_nights = no_of_week_nights + no_of_weekend_nights",
+        "arrival_month_sin / arrival_month_cos = cyclic encoding of arrival_month",
+        "rare categories grouped: Meal Plan 3 -> Other; Room_Type 3 -> Other",
+    ],
     "excluded_columns": {
         "Booking_ID": "identifier",
         "booking_status": "target label",
@@ -446,20 +448,21 @@ metadata = {
     "preprocessing_summary": {
         "numeric": "median imputer + standard scaler",
         "categorical": "most-frequent imputer + one-hot (handle_unknown=ignore)",
-        "rare_category_grouping": "Meal Plan 3 -> Other; Room_Type 3 -> Other",
-        "fit_on": "train split only",
+        "fit_on": "train split only (re-fit inside every CV fold)",
     },
     "split_strategy": {
-        "type": "time_based (user-approved in Phase 3)",
+        "type": "time_based",
         "order_by": "arrival date (year-month-day)",
         "ratios": MODEL_CONFIG["split_ratios"],
-        "train_period": f"{train.arrival_year.min()}-m{train.arrival_month.min()} to 2018-m{train.arrival_month.max()}",
-        "val_period": "2018 months 8-10",
-        "test_period": "2018 months 10-12",
-        "note": "No booking-creation timestamp exists; arrival date is the best available temporal proxy. "
-        "Validation (Aug-Oct 2018) has a higher cancellation rate (46.4%) than train (30.2%) — seasonal drift documented.",
+        "train_period": period_label(train),
+        "val_period": period_label(val),
+        "test_period": period_label(_test),
+        "note": "No booking-creation timestamp exists; arrival date is the best available "
+        "temporal proxy. Validation and test periods may show seasonal drift vs train; "
+        "the positive rates per split are recorded in the metrics files.",
     },
     "candidate_models": validation_table,
+    "selected_params": best_params,
     "selection_metric": "pr_auc (validation)",
     "chosen_decision_threshold": round(best_threshold, 3),
     "threshold_rationale": (
@@ -468,7 +471,7 @@ metadata = {
         f"an unnecessary retention action (FP); the model trades precision for recall accordingly."
     ),
     "validation_metrics": final_val_metrics,
-    "test_metrics": None,  # filled by scripts/p4_evaluate_final_model.py (single evaluation, G6)
+    "test_metrics": None,  # filled by scripts/p4_evaluate_final_model.py (single evaluation)
     "library_versions": {
         "python": sys.version.split()[0],
         "pandas": pd.__version__,
@@ -477,7 +480,7 @@ metadata = {
         "shap": shap.__version__,
     },
     "notes_and_limitations": [
-        "Temporal drift: validation period has materially higher cancellation rate than train.",
+        "Temporal drift: validation/test periods may have materially different cancellation rates than train.",
         "Guest-history features require production lookups (conditional availability).",
         "Single anonymized hotel chain; external validity unverified.",
     ],

@@ -1,4 +1,4 @@
-"""Phase 1 tests: dataset loads, expected columns exist, no fully-empty columns,
+"""Data tests: dataset loads, expected columns exist, no fully-empty columns,
 dtypes match the data dictionary."""
 
 import json
@@ -78,12 +78,3 @@ def test_dtypes_match_dictionary(df, dictionary):
             )
         else:
             assert actual == dtype, f"{col}: expected {dtype}, got {actual}"
-
-
-def test_target_flag_is_factual_only(dictionary):
-    """G1 check: dictionary flags must be factual, no ranking or proposal."""
-    flags = [c["candidate_target_flag"] for c in dictionary["columns"]]
-    assert all(
-        f in ("yes (factual flag only — evaluation deferred to Phase 3)", "no")
-        for f in flags
-    )

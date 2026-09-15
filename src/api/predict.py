@@ -3,12 +3,14 @@ maps probability to business recommendation using configs/business_rules.json.""
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import joblib
 import numpy as np
 import pandas as pd
+
+from src.features.build_features import add_engineered_features
 
 ROOT = Path(__file__).resolve().parents[2]
 MODELS = ROOT / "models"
@@ -37,46 +39,47 @@ class PredictionService:
             self.threshold,
         )
 
-    def _to_frame(self, data: dict) -> pd.DataFrame:
-        df = pd.DataFrame([data])
-        df["total_nights"] = df["no_of_week_nights"] + df["no_of_weekend_nights"]
-        df["type_of_meal_plan"] = df["type_of_meal_plan"].replace(
-            {"Meal Plan 3": "Other"}
-        )
-        df["room_type_reserved"] = df["room_type_reserved"].replace(
-            {"Room_Type 3": "Other"}
-        )
-        return df
-
     def _risk_band(self, probability: float) -> tuple[str, str]:
         for band in self.business_rules["risk_bands"]:
-            if probability <= band["max_probability"]:
+            # null max_probability = the model's cost-optimal decision threshold
+            limit = (
+                self.threshold
+                if band["max_probability"] is None
+                else band["max_probability"]
+            )
+            if probability <= limit:
                 return band["band"], band["recommendation"]
         last = self.business_rules["risk_bands"][-1]
         return last["band"], last["recommendation"]
 
-    def _top_factors(self, X_t, k: int = 5) -> list[dict]:
-        sv = self.explainer.shap_values(X_t, check_additivity=False)
-        values = np.asarray(sv)
-        if values.ndim == 3:  # (n_samples, n_features, n_outputs) layout
-            values = values[:, :, 0]
-        values = values[0]
-        order = np.argsort(-np.abs(values))[:k]
+    def _top_factors(self, shap_values: np.ndarray, k: int = 5) -> list[dict]:
+        order = np.argsort(-np.abs(shap_values))[:k]
         return [
             {
-                "feature": self.feature_names[i],
-                "contribution": round(float(values[i]), 4),
+                "feature": self._display_name(self.feature_names[i]),
+                "contribution": round(float(shap_values[i]), 4),
             }
             for i in order
         ]
 
+    @staticmethod
+    def _display_name(raw: str) -> str:
+        """Preprocessor prefixes (num__/cat__) removed; one-hot levels readable."""
+        name = raw.split("__", 1)[-1]
+        return name.replace("_", " ").strip() if raw.startswith("cat__") else name
+
     def predict(self, bookings: list[dict]) -> list[dict]:
-        frames = [self._to_frame(b) for b in bookings]
-        X = pd.concat(frames, ignore_index=True)
-        feature_cols = self.metadata["feature_list"]
-        X = X[feature_cols]
+        X = add_engineered_features(pd.DataFrame(bookings))
+        X = X[self.metadata["feature_list"]]
         X_t = self.preprocessor.transform(X)
         probs = self.model.predict_proba(X_t)[:, 1]
+
+        # One SHAP call for the whole batch
+        sv = self.explainer.shap_values(X_t, check_additivity=False)
+        values = np.asarray(sv)
+        if values.ndim == 3:  # (n_samples, n_features, n_outputs) layout
+            values = values[:, :, 0]
+
         results = []
         for i, p in enumerate(probs):
             band, recommendation = self._risk_band(float(p))
@@ -88,9 +91,9 @@ class PredictionService:
                     else "Not_Canceled",
                     "risk_band": band,
                     "recommendation": recommendation,
-                    "contributing_factors": self._top_factors(X_t[i : i + 1]),
+                    "contributing_factors": self._top_factors(values[i]),
                     "model_version": self.version,
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "timestamp": datetime.now(UTC).isoformat(),
                 }
             )
         return results
@@ -99,7 +102,7 @@ class PredictionService:
         return {
             "model_name": self.metadata["model_name"],
             "model_version": self.version,
-            "approved_target": self.metadata["approved_target"],
+            "target": self.metadata["target"],
             "problem_type": self.metadata["problem_type"],
             "features": self.metadata["feature_list"],
             "decision_threshold": self.threshold,

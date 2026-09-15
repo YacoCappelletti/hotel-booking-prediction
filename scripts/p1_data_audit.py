@@ -1,4 +1,4 @@
-"""Phase 1: Data audit - dataset inspection and data quality report.
+"""Data audit: dataset inspection and data quality report.
 
 Generates docs/data_quality_report.md and docs/json/data_quality_report.json.
 """
@@ -10,7 +10,6 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -230,17 +229,17 @@ No direct PII (names, emails, phones, payments, nationality) is present. `Bookin
 
 """
     + "\n".join(f"- {h}" for h in hypotheses)
-    + """
+    + f"""
 
 ## 13. Recommendations
 
-1. Keep all rows (no missing/duplicates); flag or drop the {zn} zero-night and {zg} zero-guest anomalies after business confirmation.
+1. Keep all rows (no missing/duplicates); flag or drop the {zero_nights} zero-night and {zero_guests} zero-guest anomalies after business confirmation.
 2. Cap or bin extreme `lead_time` (> 400 days) only after checking its predictive value.
 3. Treat `no_of_children` values 9–10 as data-entry noise; consider capping at 3.
 4. Group rare categories (`Meal Plan 3`, `Room_Type 3`) into "Other" during preprocessing.
 5. Exclude `Booking_ID` from features; do not use it for modeling.
 6. For any time-based split, note that only arrival dates exist (no booking timestamps).
-""".format(zn=zero_nights, zg=zero_guests)
+"""
 )
 
 DOCS.mkdir(exist_ok=True)

@@ -1,4 +1,4 @@
-"""Phase 2 Q01: What is the overall cancellation rate and how much revenue is at risk?
+"""Q01: What is the overall cancellation rate and how much revenue is at risk?
 
 Outputs: docs/snippets/p2_q01_output.md, docs/json/p2_q01_metrics.json,
          docs/images/p2_q01_chart.png

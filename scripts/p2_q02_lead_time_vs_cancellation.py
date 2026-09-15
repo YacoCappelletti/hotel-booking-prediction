@@ -1,4 +1,4 @@
-"""Phase 2 Q02: How does lead time affect cancellation probability?
+"""Q02: How does lead time affect cancellation probability?
 
 Outputs: docs/snippets/p2_q02_output.md, docs/json/p2_q02_metrics.json,
          docs/images/p2_q02_chart.png

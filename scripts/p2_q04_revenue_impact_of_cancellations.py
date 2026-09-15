@@ -1,4 +1,4 @@
-"""Phase 2 Q04: What is the revenue impact of cancellations by arrival month (seasonality)?
+"""Q04: What is the revenue impact of cancellations by arrival month (seasonality)?
 
 Outputs: docs/snippets/p2_q04_output.md, docs/json/p2_q04_metrics.json,
          docs/images/p2_q04_chart.png

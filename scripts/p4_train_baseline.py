@@ -1,7 +1,8 @@
-"""Phase 4 step 1: baseline model (majority class predictor).
+"""Baseline model: majority-class predictor.
 
 Uses ONLY train data for fitting and validation for reporting.
-The test set is never touched here (G6).
+The test set is never touched here; it is evaluated exactly once by
+scripts/p4_evaluate_final_model.py.
 """
 
 import json
@@ -13,7 +14,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.features.build_features import load_raw, temporal_split, xy
+from src.features.build_features import load_raw, temporal_split, xy  # noqa: E402
 
 DOCS_JSON = ROOT / "docs" / "json"
 

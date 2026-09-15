@@ -1,9 +1,10 @@
-"""Phase 4 step 3: evaluate the final model on the TEST set — exactly once (G6).
+"""Step 3: evaluate the final model on the TEST set — exactly once.
 
 This is the ONLY script that touches the test set for evaluation. It loads the
 persisted artifacts, computes final test metrics at the validation-chosen
 threshold, and updates models/model_metadata.json and
-docs/json/model_performance.json.
+docs/json/model_performance.json. Re-training resets the test metrics in
+scripts/p4_train_candidate_models.py, which re-enables this evaluation.
 """
 
 import json
@@ -17,23 +18,22 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import sklearn
 from sklearn.metrics import (
     average_precision_score,
     brier_score_loss,
     confusion_matrix,
     f1_score,
+    precision_recall_curve,
     precision_score,
     recall_score,
     roc_auc_score,
     roc_curve,
-    precision_recall_curve,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.features.build_features import load_raw, temporal_split, xy
+from src.features.build_features import load_raw, temporal_split, xy  # noqa: E402
 
 MODELS = ROOT / "models"
 DOCS_JSON = ROOT / "docs" / "json"
@@ -41,7 +41,8 @@ IMAGES = ROOT / "docs" / "images"
 
 metadata = json.loads((MODELS / "model_metadata.json").read_text())
 assert metadata["test_metrics"] is None, (
-    "G6 violation: test set already evaluated once. Refusing to re-evaluate."
+    "Test set already evaluated once. Re-run scripts/p4_train_candidate_models.py "
+    "to retrain before a new test evaluation."
 )
 
 model = joblib.load(MODELS / "final_model.joblib")
@@ -73,7 +74,7 @@ test_metrics = {
         "tp": int(cm[1, 1]),
     },
 }
-print("Single test-set evaluation (G6):")
+print("Single test-set evaluation:")
 for k, v in test_metrics.items():
     print(f"  {k}: {v}")
 

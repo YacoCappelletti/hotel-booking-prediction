@@ -1,7 +1,6 @@
-"""Phase 5 tests: /health returns 200; valid prediction returns 200 with the
+"""API tests: /health returns 200; valid prediction returns 200 with the
 expected schema; invalid input returns 422."""
 
-import json
 from pathlib import Path
 
 import pytest

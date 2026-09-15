@@ -1,8 +1,8 @@
-"""Pydantic schemas for the prediction API (Phase 5)."""
+"""Pydantic schemas for the prediction API."""
 
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, model_validator
 
 
 class BookingFeatures(BaseModel):
@@ -40,11 +40,19 @@ class BookingFeatures(BaseModel):
     )
     no_of_special_requests: int = Field(ge=0, le=10)
 
-    @field_validator("no_of_adults", "no_of_children")
-    @classmethod
-    def not_all_zero(cls, v, info):
-        # Cross-field check happens at the model level in predict.py
-        return v
+    @model_validator(mode="after")
+    def validate_booking(self):
+        if self.no_of_adults + self.no_of_children == 0:
+            raise ValueError("Booking must have at least one guest")
+        if self.no_of_week_nights + self.no_of_weekend_nights == 0:
+            raise ValueError("Booking must have at least one night")
+        if self.arrival_date > 31:
+            raise ValueError("arrival_date must be a valid day of the month")
+        if self.arrival_month == 2 and self.arrival_date > 29:
+            raise ValueError("February has at most 29 days")
+        if self.arrival_month in (4, 6, 9, 11) and self.arrival_date > 30:
+            raise ValueError("This month has at most 30 days")
+        return self
 
 
 class PredictRequest(BaseModel):
@@ -79,7 +87,7 @@ class HealthResponse(BaseModel):
 class ModelCardResponse(BaseModel):
     model_name: str
     model_version: str
-    approved_target: str
+    target: str
     problem_type: str
     features: list[str]
     decision_threshold: float

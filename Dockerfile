@@ -13,7 +13,6 @@ COPY configs/ configs/
 COPY src/ src/
 COPY apps/ apps/
 COPY models/ models/
-COPY docs/json/ docs/json/
 COPY data/raw/ data/raw/
 
 EXPOSE 8000 8501 8502

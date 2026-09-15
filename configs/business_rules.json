@@ -1,12 +1,13 @@
 {
-  "source": "Phase 2 insights (p2_q01, p2_q02, p2_q03, p2_q04, p2_q05)",
+  "source": "Insights from scripts/p2_q01..q05 (cancellation overview, lead time, market segments, revenue impact, seasonality)",
   "problem_type_hypothesis": "classification",
   "risk_bands": [
     {
       "band": "low",
-      "max_probability": 0.25,
+      "max_probability": null,
+      "max_probability_source": "model decision threshold (models/model_metadata.json)",
       "recommendation": "No action needed. Standard confirmation flow.",
-      "justification": "Below the dataset base rate (~0.33) and consistent with observed low-risk profiles: lead time <= 30d, corporate segment, or 1+ special requests (Q02, Q03, Q05)."
+      "justification": "Below the cost-optimal decision threshold: intervening costs more than the expected loss from a missed cancellation. Consistent low-risk profiles: lead time <= 30d, corporate segment, or 1+ special requests (Q02, Q03, Q05)."
     },
     {
       "band": "medium",
@@ -25,7 +26,7 @@
     "false_negative_cost": 10,
     "false_positive_cost": 1,
     "justification": "FN (missed cancellation): average booking value ~EUR 313 with ~38% of potential revenue lost (Q01); losing a room-night with no re-sell chance is expensive. FP (unnecessary retention action): cost of a reconfirmation call/incentive is small. Exact monetary calibration is unknown; 10:1 ratio documented as a conservative assumption pending finance validation.",
-    "assumption_note": "Bands and costs are assumptions derived from Phase 2 observed rates, not exact business figures."
+    "assumption_note": "Bands and costs are assumptions derived from observed rates in the analysis scripts, not exact business figures."
   },
-  "decision_threshold_policy": "Optimize the decision threshold on the validation set by minimizing expected cost using this cost matrix (never on the test set, G6)."
+  "decision_threshold_policy": "Optimize the decision threshold on the validation set by minimizing expected cost using this cost matrix (never on the test set, which is evaluated exactly once)."
 }

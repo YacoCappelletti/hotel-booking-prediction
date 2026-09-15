@@ -1,4 +1,4 @@
-"""Phase 2 Q03: How do market segments differ in cancellation behavior?
+"""Q03: How do market segments differ in cancellation behavior?
 
 Outputs: docs/snippets/p2_q03_output.md, docs/json/p2_q03_metrics.json,
          docs/images/p2_q03_chart.png

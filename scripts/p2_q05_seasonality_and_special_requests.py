@@ -1,4 +1,4 @@
-"""Phase 2 Q05: Do engagement and loyalty signals (special requests, repeated guest,
+"""Q05: Do engagement and loyalty signals (special requests, repeated guest,
 previous history) reduce cancellation probability?
 
 Outputs: docs/snippets/p2_q05_output.md, docs/json/p2_q05_metrics.json,

@@ -1,8 +1,7 @@
 """Shared feature engineering and data utilities for the hotel cancellations project.
 
-Loads raw data, builds the feature matrix, and performs the approved
-time-based split (ordered by arrival date) per the user-approved target
-proposal (docs/json/target_approval.json).
+Loads raw data, builds the feature matrix, and performs the time-based split
+ordered by arrival date (see docs/model_report.md for the rationale).
 """
 
 import json
@@ -36,7 +35,8 @@ NUMERIC_FEATURES = [
     "no_of_previous_bookings_not_canceled",
     "avg_price_per_room",
     "no_of_special_requests",
-    "arrival_month",
+    "arrival_month_sin",
+    "arrival_month_cos",
     "total_nights",
 ]
 CATEGORICAL_FEATURES = [
@@ -52,12 +52,25 @@ RARE_CATEGORY_MAP = {
 }
 
 
+def add_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Return a copy of `df` with the engineered feature columns.
+
+    Shared by the training pipeline and the prediction API so both always
+    produce identical inputs for the model.
+    """
+    out = df.copy()
+    out["total_nights"] = out["no_of_week_nights"] + out["no_of_weekend_nights"]
+    month = out["arrival_month"].to_numpy(dtype=float)
+    out["arrival_month_sin"] = np.sin(2.0 * np.pi * month / 12.0)
+    out["arrival_month_cos"] = np.cos(2.0 * np.pi * month / 12.0)
+    for col, mapping in RARE_CATEGORY_MAP.items():
+        out[col] = out[col].replace(mapping)
+    return out
+
+
 def load_raw() -> pd.DataFrame:
     df = pd.read_csv(RAW)
-    df["total_nights"] = df["no_of_week_nights"] + df["no_of_weekend_nights"]
-    for col, mapping in RARE_CATEGORY_MAP.items():
-        df[col] = df[col].replace(mapping)
-    return df
+    return add_engineered_features(df)
 
 
 def arrival_datetime(df: pd.DataFrame) -> pd.Series:
@@ -86,7 +99,7 @@ def arrival_datetime(df: pd.DataFrame) -> pd.Series:
 
 
 def temporal_split(df: pd.DataFrame):
-    """Time-based split ordered by arrival date (user-approved in Phase 3).
+    """Time-based split ordered by arrival date.
 
     Returns train (70%), validation (15%), test (15%) sorted by arrival date.
     """
