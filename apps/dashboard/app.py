@@ -71,39 +71,45 @@ tab_overview, tab_lead, tab_segment, tab_season, tab_engagement = st.tabs(
         "Lead time",
         "Market segments",
         "Special requests",
-        "Guest mix",
+        "Booking volume",
     ]
 )
+
+month_names = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+]
+# Months visible in the charts always match the slider range, even if a month
+# has no bookings under the current segment/year filters.
+selected_months = list(range(month_filter[0], month_filter[1] + 1))
+selected_month_names = [month_names[m - 1] for m in selected_months]
 
 with tab_overview:
     st.subheader("Monthly lost revenue and cancellation rate")
     monthly = fdf.groupby("arrival_month").agg(
         rate=("cancel", "mean"), lost=("lost_revenue", "sum")
     )
-    month_names = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ]
+    monthly = monthly.reindex(selected_months)
     fig = go.Figure()
     fig.add_bar(
-        x=month_names,
+        x=selected_month_names,
         y=monthly["lost"] / 1e3,
         name="Lost revenue (k EUR)",
         marker_color=RED,
         opacity=0.75,
     )
     fig.add_scatter(
-        x=month_names,
+        x=selected_month_names,
         y=monthly["rate"],
         name="Cancellation rate",
         mode="lines+markers",
@@ -121,7 +127,7 @@ with tab_overview:
         height=420,
         legend={"orientation": "h", "y": 1.1},
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.markdown("**Interpretation:** losses concentrate in peak months (Q04).")
 
 with tab_lead:
@@ -133,20 +139,21 @@ with tab_lead:
         fdf2["lead_time"], bins=bins, labels=labels, include_lowest=True
     )
     by_lead = fdf2.groupby("band", observed=True)["cancel"].agg(["mean", "size"])
+    bl = by_lead.reset_index()
     fig = px.bar(
-        x=by_lead.index.astype(str),
-        y=by_lead["mean"],
+        bl,
+        x="band",
+        y="mean",
+        custom_data=["size"],
         color_discrete_sequence=[BLUE],
-        custom_data=by_lead["size"],
+        labels={"band": "Lead-time band", "mean": "Cancellation rate"},
     )
     fig.update_traces(hovertemplate="%{y:.1%} cancel rate (%{customdata} bookings)")
     fig.update_layout(
-        xaxis_title="Lead-time band",
-        yaxis_title="Cancellation rate",
         yaxis_range=[0, 1],
         height=420,
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.markdown(
         "**Interpretation:** long-lead bookings cancel far more — plans made months "
         "ahead are fragile (Q02)."
@@ -159,20 +166,21 @@ with tab_segment:
         .agg(["mean", "size"])
         .sort_values("mean", ascending=False)
     )
+    bs = by_seg.reset_index()
     fig = px.bar(
-        x=by_seg.index,
-        y=by_seg["mean"],
+        bs,
+        x="market_segment_type",
+        y="mean",
+        custom_data=["size"],
         color_discrete_sequence=[ORANGE],
-        custom_data=by_seg["size"],
+        labels={"market_segment_type": "Market segment", "mean": "Cancellation rate"},
     )
     fig.update_traces(hovertemplate="%{y:.1%} cancel rate (%{customdata} bookings)")
     fig.update_layout(
-        xaxis_title="Market segment",
-        yaxis_title="Cancellation rate",
         yaxis_range=[0, 1],
         height=420,
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.markdown(
         "**Interpretation:** Online dominates volume and risk; Corporate is the safest "
         "paying segment (Q03)."
@@ -181,15 +189,23 @@ with tab_segment:
 with tab_engagement:
     st.subheader("Engagement is protective")
     by_req = fdf.groupby("no_of_special_requests")["cancel"].mean()
-    fig = px.bar(x=by_req.index.astype(str), y=by_req, color_discrete_sequence=[PURPLE])
+    br = by_req.reset_index()
+    fig = px.bar(
+        br,
+        x="no_of_special_requests",
+        y="cancel",
+        color_discrete_sequence=[PURPLE],
+        labels={
+            "no_of_special_requests": "Special requests",
+            "cancel": "Cancellation rate",
+        },
+    )
     fig.update_traces(hovertemplate="%{y:.1%} cancel rate")
     fig.update_layout(
-        xaxis_title="Special requests",
-        yaxis_title="Cancellation rate",
         yaxis_range=[0, 1],
         height=420,
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.markdown(
         "**Interpretation:** every special request lowers risk; zero-request, first-time, "
         "long-lead bookings are the archetypal risk profile (Q05)."
@@ -198,19 +214,21 @@ with tab_engagement:
 with tab_season:
     st.subheader("Seasonality of booking volume")
     by_month = fdf.groupby("arrival_month")["cancel"].agg(["mean", "size"])
+    bm = by_month.reindex(selected_months).fillna({"mean": 0, "size": 0})
+    bm["month"] = [month_names[m - 1] for m in bm.index]
     fig = px.bar(
-        x=month_names,
-        y=by_month["size"],
+        bm,
+        x="month",
+        y="size",
+        custom_data=["mean"],
         color_discrete_sequence=[BLUE],
-        custom_data=by_month["mean"],
+        labels={"month": "Arrival month", "size": "Bookings"},
     )
     fig.update_traces(hovertemplate="%{y:,} bookings · %{customdata:.1%} cancel rate")
     fig.update_layout(
-        xaxis_title="Arrival month",
-        yaxis_title="Bookings",
         height=420,
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.markdown(
         "**Interpretation:** demand peaks Aug–Oct, exactly where losses concentrate (Q04/Q05)."
     )
@@ -242,7 +260,7 @@ actions = pd.DataFrame(
     ],
     columns=["Signal observed", "Recommended action"],
 )
-st.dataframe(actions, use_container_width=True, hide_index=True)
+st.dataframe(actions, width="stretch", hide_index=True)
 
 st.caption(
     "Source: business analysis (docs/business_analysis_report.md). "
