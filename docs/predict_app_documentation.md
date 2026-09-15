@@ -2,7 +2,7 @@
 
 **Location:** `apps/predict_app/app.py` · **Port:** 8501 · **Framework:** Streamlit
 
-![Predict app](images/predict_app_screenshot.png)
+![Predict app form](images/predict_app_screenshot.png)
 
 ## Purpose
 
@@ -18,6 +18,8 @@ and receive the business-recommended action.
 3. Press **Predict cancellation risk**.
 
 ### Output
+
+![Predict app results](images/predict_app_results_screenshot.png)
 
 - **Cancellation risk gauge** (0–100%) with the band thresholds colored.
 - **Risk band** (low / medium / high) color-coded, consistent with the predicted label
