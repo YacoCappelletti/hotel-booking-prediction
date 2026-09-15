@@ -4,7 +4,7 @@
     "path": "/health",
     "response": {
       "status": "ok",
-      "model_version": "1.0.0",
+      "model_version": "1.1.0",
       "model_name": "GradientBoostingClassifier"
     }
   },
@@ -43,28 +43,28 @@
           "recommendation": "No action needed. Standard confirmation flow.",
           "contributing_factors": [
             {
-              "feature": "num__no_of_special_requests",
-              "contribution": -4.223
+              "feature": "no_of_special_requests",
+              "contribution": -4.3891
             },
             {
-              "feature": "num__required_car_parking_space",
-              "contribution": -2.6995
+              "feature": "required_car_parking_space",
+              "contribution": -2.8108
             },
             {
-              "feature": "num__lead_time",
-              "contribution": -1.4638
+              "feature": "lead_time",
+              "contribution": -2.0111
             },
             {
-              "feature": "num__no_of_previous_bookings_not_canceled",
-              "contribution": -1.1386
+              "feature": "no_of_previous_bookings_not_canceled",
+              "contribution": -1.0253
             },
             {
-              "feature": "num__repeated_guest",
-              "contribution": -0.4795
+              "feature": "repeated_guest",
+              "contribution": -0.6973
             }
           ],
-          "model_version": "1.0.0",
-          "timestamp": "2026-09-13T20:52:45.664103+00:00"
+          "model_version": "1.1.0",
+          "timestamp": "2026-09-15T14:57:18.370761+00:00"
         }
       ]
     }
@@ -98,34 +98,34 @@
     "response": {
       "predictions": [
         {
-          "predicted_probability": 0.9971,
+          "predicted_probability": 0.9997,
           "predicted_label": "Canceled",
           "risk_band": "high",
           "recommendation": "Assign retention workflow immediately: personal contact, deposit/penalty enforcement, and inventory reallocation review.",
           "contributing_factors": [
             {
-              "feature": "num__lead_time",
-              "contribution": 5.5394
+              "feature": "lead_time",
+              "contribution": 6.1998
             },
             {
-              "feature": "cat__market_segment_type_Online",
-              "contribution": 1.0257
+              "feature": "avg_price_per_room",
+              "contribution": 0.9413
             },
             {
-              "feature": "num__arrival_month",
-              "contribution": -0.9781
+              "feature": "no_of_special_requests",
+              "contribution": 0.7707
             },
             {
-              "feature": "num__avg_price_per_room",
-              "contribution": 0.8685
+              "feature": "market segment type Online",
+              "contribution": 0.7178
             },
             {
-              "feature": "num__no_of_special_requests",
-              "contribution": 0.811
+              "feature": "market segment type Offline",
+              "contribution": 0.7066
             }
           ],
-          "model_version": "1.0.0",
-          "timestamp": "2026-09-13T20:52:45.680284+00:00"
+          "model_version": "1.1.0",
+          "timestamp": "2026-09-15T14:57:18.410452+00:00"
         }
       ]
     }
@@ -135,9 +135,9 @@
     "path": "/v1/model-card",
     "response": {
       "model_name": "GradientBoostingClassifier",
-      "model_version": "1.0.0",
-      "approved_target": "booking_status (binary: Canceled vs Not_Canceled)",
-      "problem_type": "classification",
+      "model_version": "1.1.0",
+      "target": "booking_status",
+      "problem_type": "binary classification",
       "features": [
         "no_of_adults",
         "no_of_children",
@@ -150,34 +150,35 @@
         "no_of_previous_bookings_not_canceled",
         "avg_price_per_room",
         "no_of_special_requests",
-        "arrival_month",
+        "arrival_month_sin",
+        "arrival_month_cos",
         "total_nights",
         "type_of_meal_plan",
         "room_type_reserved",
         "market_segment_type"
       ],
-      "decision_threshold": 0.02,
-      "training_timestamp": "2026-09-13T20:50:49.356012+00:00",
+      "decision_threshold": 0.035,
+      "training_timestamp": "2026-09-15T14:45:26.259610+00:00",
       "test_metrics": {
         "n_test": 5442,
         "test_positive_rate": 0.3082,
-        "threshold": 0.02,
-        "accuracy": 0.6656,
-        "precision": 0.4788,
-        "recall": 0.9642,
-        "f1": 0.6399,
-        "roc_auc": 0.865,
-        "pr_auc": 0.7413,
-        "brier": 0.1641,
+        "threshold": 0.035,
+        "accuracy": 0.7293,
+        "precision": 0.5345,
+        "recall": 0.9428,
+        "f1": 0.6822,
+        "roc_auc": 0.8696,
+        "pr_auc": 0.7478,
+        "brier": 0.1643,
         "confusion_matrix": {
-          "tn": 2005,
-          "fp": 1760,
-          "fn": 60,
-          "tp": 1617
+          "tn": 2388,
+          "fp": 1377,
+          "fn": 96,
+          "tp": 1581
         }
       },
       "notes_and_limitations": [
-        "Temporal drift: validation period has materially higher cancellation rate than train.",
+        "Temporal drift: validation/test periods may have materially different cancellation rates than train.",
         "Guest-history features require production lookups (conditional availability).",
         "Single anonymized hotel chain; external validity unverified."
       ]

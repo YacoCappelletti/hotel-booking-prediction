@@ -1,7 +1,0 @@
-{
-  "approved_target": "booking_status (binary: Canceled vs Not_Canceled)",
-  "approved_problem_type": "classification",
-  "approval_status": "approved",
-  "user_comments": "User approved: (1) include Complementary bookings in training; (2) accept 10:1 FN:FP cost matrix; (3) use time-based split ordered by arrival date.",
-  "approval_timestamp": "2026-09-13T20:44:07.254524+00:00"
-}

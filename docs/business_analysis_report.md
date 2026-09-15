@@ -1,4 +1,4 @@
-# Business Analysis Report — Phase 2
+# Business Analysis Report
 
 Purpose: understand and quantify the business value extractable from the hotel reservations dataset
 through data-backed insights. All insights are justified with code (`/scripts/p2_q0*.py`),
@@ -83,9 +83,9 @@ first-time, long-lead bookings for reconfirmation.
 
 ## Operational translation — `configs/business_rules.json`
 
-Phase 2 insights were translated into risk bands, recommendations, and a cost matrix:
+The insights above were translated into risk bands, recommendations, and a cost matrix:
 
-- **Low risk (< 0.25):** no action — consistent with low-risk profiles observed in Q02/Q03/Q05.
+- **Low risk (below the model's cost-optimal threshold):** no action — consistent with low-risk profiles observed in Q02/Q03/Q05.
 - **Medium risk (0.25–0.55):** proactive reconfirmation + flexible-date incentive — matches the
   28–45% observed rates of mid-horizon/online profiles.
 - **High risk (> 0.55):** immediate retention workflow (personal contact, deposit enforcement,
@@ -94,8 +94,8 @@ Phase 2 insights were translated into risk bands, recommendations, and a cost ma
   an unnecessary retention action costs a small incentive. Exact values are documented as
   assumptions pending finance validation.
 
-## Governance note (G1)
+## From analysis to prediction
 
-> No target variable was selected, ranked, or proposed in this phase. These findings describe
-> business value and operational levers only. Target selection happens in Phase 3 with explicit
-> user approval.
+These findings motivated building a cancellation-risk classifier: the target is `booking_status`
+(Canceled vs Not_Canceled), and the score from that model feeds the risk bands above. See
+`docs/problem_statement.md` and `docs/model_report.md`.

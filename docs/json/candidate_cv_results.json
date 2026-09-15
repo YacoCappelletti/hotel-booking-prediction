@@ -5,8 +5,8 @@
       "C": 0.1,
       "max_iter": 1000
     },
-    "cv_pr_auc_mean": 0.7281,
-    "cv_pr_auc_std": 0.0093
+    "cv_pr_auc_mean": 0.7299,
+    "cv_pr_auc_std": 0.0101
   },
   {
     "model": "LogisticRegression",
@@ -14,8 +14,8 @@
       "C": 1.0,
       "max_iter": 1000
     },
-    "cv_pr_auc_mean": 0.7282,
-    "cv_pr_auc_std": 0.0094
+    "cv_pr_auc_mean": 0.7298,
+    "cv_pr_auc_std": 0.01
   },
   {
     "model": "LogisticRegression",
@@ -23,8 +23,8 @@
       "C": 10.0,
       "max_iter": 1000
     },
-    "cv_pr_auc_mean": 0.7282,
-    "cv_pr_auc_std": 0.0093
+    "cv_pr_auc_mean": 0.7299,
+    "cv_pr_auc_std": 0.0101
   },
   {
     "model": "DecisionTreeClassifier",
@@ -32,8 +32,8 @@
       "max_depth": 5,
       "min_samples_leaf": 5
     },
-    "cv_pr_auc_mean": 0.7572,
-    "cv_pr_auc_std": 0.0087
+    "cv_pr_auc_mean": 0.7582,
+    "cv_pr_auc_std": 0.0083
   },
   {
     "model": "DecisionTreeClassifier",
@@ -41,8 +41,8 @@
       "max_depth": 5,
       "min_samples_leaf": 20
     },
-    "cv_pr_auc_mean": 0.7543,
-    "cv_pr_auc_std": 0.0089
+    "cv_pr_auc_mean": 0.7554,
+    "cv_pr_auc_std": 0.0084
   },
   {
     "model": "DecisionTreeClassifier",
@@ -50,8 +50,8 @@
       "max_depth": 5,
       "min_samples_leaf": 50
     },
-    "cv_pr_auc_mean": 0.7543,
-    "cv_pr_auc_std": 0.0067
+    "cv_pr_auc_mean": 0.7541,
+    "cv_pr_auc_std": 0.0073
   },
   {
     "model": "DecisionTreeClassifier",
@@ -59,52 +59,52 @@
       "max_depth": 10,
       "min_samples_leaf": 5
     },
-    "cv_pr_auc_mean": 0.8472,
-    "cv_pr_auc_std": 0.0062
-  },
-  {
-    "model": "DecisionTreeClassifier",
-    "params": {
-      "max_depth": 10,
-      "min_samples_leaf": 20
-    },
-    "cv_pr_auc_mean": 0.8437,
-    "cv_pr_auc_std": 0.0057
-  },
-  {
-    "model": "DecisionTreeClassifier",
-    "params": {
-      "max_depth": 10,
-      "min_samples_leaf": 50
-    },
-    "cv_pr_auc_mean": 0.8328,
-    "cv_pr_auc_std": 0.0089
-  },
-  {
-    "model": "DecisionTreeClassifier",
-    "params": {
-      "max_depth": 15,
-      "min_samples_leaf": 5
-    },
-    "cv_pr_auc_mean": 0.8612,
-    "cv_pr_auc_std": 0.0075
-  },
-  {
-    "model": "DecisionTreeClassifier",
-    "params": {
-      "max_depth": 15,
-      "min_samples_leaf": 20
-    },
-    "cv_pr_auc_mean": 0.8639,
+    "cv_pr_auc_mean": 0.8453,
     "cv_pr_auc_std": 0.0047
   },
   {
     "model": "DecisionTreeClassifier",
     "params": {
+      "max_depth": 10,
+      "min_samples_leaf": 20
+    },
+    "cv_pr_auc_mean": 0.8397,
+    "cv_pr_auc_std": 0.0058
+  },
+  {
+    "model": "DecisionTreeClassifier",
+    "params": {
+      "max_depth": 10,
+      "min_samples_leaf": 50
+    },
+    "cv_pr_auc_mean": 0.8334,
+    "cv_pr_auc_std": 0.0081
+  },
+  {
+    "model": "DecisionTreeClassifier",
+    "params": {
+      "max_depth": 15,
+      "min_samples_leaf": 5
+    },
+    "cv_pr_auc_mean": 0.8559,
+    "cv_pr_auc_std": 0.0072
+  },
+  {
+    "model": "DecisionTreeClassifier",
+    "params": {
+      "max_depth": 15,
+      "min_samples_leaf": 20
+    },
+    "cv_pr_auc_mean": 0.8602,
+    "cv_pr_auc_std": 0.0033
+  },
+  {
+    "model": "DecisionTreeClassifier",
+    "params": {
       "max_depth": 15,
       "min_samples_leaf": 50
     },
-    "cv_pr_auc_mean": 0.8456,
+    "cv_pr_auc_mean": 0.8462,
     "cv_pr_auc_std": 0.0084
   },
   {
@@ -113,8 +113,8 @@
       "max_depth": null,
       "min_samples_leaf": 5
     },
-    "cv_pr_auc_mean": 0.8211,
-    "cv_pr_auc_std": 0.0042
+    "cv_pr_auc_mean": 0.8156,
+    "cv_pr_auc_std": 0.0051
   },
   {
     "model": "DecisionTreeClassifier",
@@ -122,8 +122,8 @@
       "max_depth": null,
       "min_samples_leaf": 20
     },
-    "cv_pr_auc_mean": 0.8594,
-    "cv_pr_auc_std": 0.0064
+    "cv_pr_auc_mean": 0.8568,
+    "cv_pr_auc_std": 0.0043
   },
   {
     "model": "DecisionTreeClassifier",
@@ -131,8 +131,8 @@
       "max_depth": null,
       "min_samples_leaf": 50
     },
-    "cv_pr_auc_mean": 0.8457,
-    "cv_pr_auc_std": 0.008
+    "cv_pr_auc_mean": 0.8466,
+    "cv_pr_auc_std": 0.0086
   },
   {
     "model": "RandomForestClassifier",
@@ -141,48 +141,48 @@
       "max_depth": 10,
       "min_samples_leaf": 2
     },
-    "cv_pr_auc_mean": 0.8698,
-    "cv_pr_auc_std": 0.0059
-  },
-  {
-    "model": "RandomForestClassifier",
-    "params": {
-      "n_estimators": 200,
-      "max_depth": 10,
-      "min_samples_leaf": 10
-    },
-    "cv_pr_auc_mean": 0.8584,
-    "cv_pr_auc_std": 0.0045
-  },
-  {
-    "model": "RandomForestClassifier",
-    "params": {
-      "n_estimators": 200,
-      "max_depth": 15,
-      "min_samples_leaf": 2
-    },
-    "cv_pr_auc_mean": 0.8982,
-    "cv_pr_auc_std": 0.0047
-  },
-  {
-    "model": "RandomForestClassifier",
-    "params": {
-      "n_estimators": 200,
-      "max_depth": 15,
-      "min_samples_leaf": 10
-    },
-    "cv_pr_auc_mean": 0.874,
+    "cv_pr_auc_mean": 0.872,
     "cv_pr_auc_std": 0.0057
   },
   {
     "model": "RandomForestClassifier",
     "params": {
       "n_estimators": 200,
+      "max_depth": 10,
+      "min_samples_leaf": 10
+    },
+    "cv_pr_auc_mean": 0.8625,
+    "cv_pr_auc_std": 0.0073
+  },
+  {
+    "model": "RandomForestClassifier",
+    "params": {
+      "n_estimators": 200,
+      "max_depth": 15,
+      "min_samples_leaf": 2
+    },
+    "cv_pr_auc_mean": 0.9005,
+    "cv_pr_auc_std": 0.0048
+  },
+  {
+    "model": "RandomForestClassifier",
+    "params": {
+      "n_estimators": 200,
+      "max_depth": 15,
+      "min_samples_leaf": 10
+    },
+    "cv_pr_auc_mean": 0.8782,
+    "cv_pr_auc_std": 0.0062
+  },
+  {
+    "model": "RandomForestClassifier",
+    "params": {
+      "n_estimators": 200,
       "max_depth": null,
       "min_samples_leaf": 2
     },
-    "cv_pr_auc_mean": 0.9069,
-    "cv_pr_auc_std": 0.0047
+    "cv_pr_auc_mean": 0.9081,
+    "cv_pr_auc_std": 0.0042
   },
   {
     "model": "RandomForestClassifier",
@@ -191,8 +191,8 @@
       "max_depth": null,
       "min_samples_leaf": 10
     },
-    "cv_pr_auc_mean": 0.8773,
-    "cv_pr_auc_std": 0.0067
+    "cv_pr_auc_mean": 0.8801,
+    "cv_pr_auc_std": 0.0073
   },
   {
     "model": "RandomForestClassifier",
@@ -201,8 +201,8 @@
       "max_depth": 10,
       "min_samples_leaf": 2
     },
-    "cv_pr_auc_mean": 0.8686,
-    "cv_pr_auc_std": 0.006
+    "cv_pr_auc_mean": 0.8719,
+    "cv_pr_auc_std": 0.0062
   },
   {
     "model": "RandomForestClassifier",
@@ -211,8 +211,8 @@
       "max_depth": 10,
       "min_samples_leaf": 10
     },
-    "cv_pr_auc_mean": 0.8585,
-    "cv_pr_auc_std": 0.005
+    "cv_pr_auc_mean": 0.8625,
+    "cv_pr_auc_std": 0.0065
   },
   {
     "model": "RandomForestClassifier",
@@ -221,8 +221,8 @@
       "max_depth": 15,
       "min_samples_leaf": 2
     },
-    "cv_pr_auc_mean": 0.8984,
-    "cv_pr_auc_std": 0.0047
+    "cv_pr_auc_mean": 0.9005,
+    "cv_pr_auc_std": 0.0046
   },
   {
     "model": "RandomForestClassifier",
@@ -231,8 +231,8 @@
       "max_depth": 15,
       "min_samples_leaf": 10
     },
-    "cv_pr_auc_mean": 0.8746,
-    "cv_pr_auc_std": 0.0056
+    "cv_pr_auc_mean": 0.8784,
+    "cv_pr_auc_std": 0.0064
   },
   {
     "model": "RandomForestClassifier",
@@ -241,7 +241,7 @@
       "max_depth": null,
       "min_samples_leaf": 2
     },
-    "cv_pr_auc_mean": 0.9074,
+    "cv_pr_auc_mean": 0.9087,
     "cv_pr_auc_std": 0.0046
   },
   {
@@ -251,8 +251,8 @@
       "max_depth": null,
       "min_samples_leaf": 10
     },
-    "cv_pr_auc_mean": 0.8776,
-    "cv_pr_auc_std": 0.0062
+    "cv_pr_auc_mean": 0.8811,
+    "cv_pr_auc_std": 0.0067
   },
   {
     "model": "GradientBoostingClassifier",
@@ -261,8 +261,8 @@
       "learning_rate": 0.05,
       "max_depth": 3
     },
-    "cv_pr_auc_mean": 0.8404,
-    "cv_pr_auc_std": 0.0063
+    "cv_pr_auc_mean": 0.8396,
+    "cv_pr_auc_std": 0.0066
   },
   {
     "model": "GradientBoostingClassifier",
@@ -271,8 +271,8 @@
       "learning_rate": 0.05,
       "max_depth": 5
     },
-    "cv_pr_auc_mean": 0.8828,
-    "cv_pr_auc_std": 0.0045
+    "cv_pr_auc_mean": 0.884,
+    "cv_pr_auc_std": 0.0049
   },
   {
     "model": "GradientBoostingClassifier",
@@ -281,8 +281,8 @@
       "learning_rate": 0.1,
       "max_depth": 3
     },
-    "cv_pr_auc_mean": 0.8619,
-    "cv_pr_auc_std": 0.005
+    "cv_pr_auc_mean": 0.8624,
+    "cv_pr_auc_std": 0.0055
   },
   {
     "model": "GradientBoostingClassifier",
@@ -291,8 +291,8 @@
       "learning_rate": 0.1,
       "max_depth": 5
     },
-    "cv_pr_auc_mean": 0.8977,
-    "cv_pr_auc_std": 0.0052
+    "cv_pr_auc_mean": 0.8979,
+    "cv_pr_auc_std": 0.0043
   },
   {
     "model": "GradientBoostingClassifier",
@@ -301,7 +301,7 @@
       "learning_rate": 0.05,
       "max_depth": 3
     },
-    "cv_pr_auc_mean": 0.8608,
+    "cv_pr_auc_mean": 0.8614,
     "cv_pr_auc_std": 0.0051
   },
   {
@@ -311,8 +311,8 @@
       "learning_rate": 0.05,
       "max_depth": 5
     },
-    "cv_pr_auc_mean": 0.8976,
-    "cv_pr_auc_std": 0.0047
+    "cv_pr_auc_mean": 0.8984,
+    "cv_pr_auc_std": 0.0041
   },
   {
     "model": "GradientBoostingClassifier",
@@ -321,8 +321,8 @@
       "learning_rate": 0.1,
       "max_depth": 3
     },
-    "cv_pr_auc_mean": 0.8803,
-    "cv_pr_auc_std": 0.004
+    "cv_pr_auc_mean": 0.8802,
+    "cv_pr_auc_std": 0.0047
   },
   {
     "model": "GradientBoostingClassifier",
@@ -331,7 +331,7 @@
       "learning_rate": 0.1,
       "max_depth": 5
     },
-    "cv_pr_auc_mean": 0.908,
-    "cv_pr_auc_std": 0.0054
+    "cv_pr_auc_mean": 0.9072,
+    "cv_pr_auc_std": 0.0045
   }
 ]

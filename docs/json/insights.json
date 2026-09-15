@@ -1,5 +1,4 @@
 {
-  "phase": 2,
   "insights": [
     {
       "id": "insight_01",
@@ -56,6 +55,5 @@
       "interpretation": "Every engagement signal is protective. A booking with zero special requests from a first-time guest is the archetypal high-risk profile.",
       "recommended_action": "Nudge guests to add preferences/requests at booking (upsell + retention); prioritize zero-request, first-time, long-lead bookings for reconfirmation."
     }
-  ],
-  "g1_note": "No target variable was selected, ranked, or proposed in Phase 2 (G1)."
+  ]
 }

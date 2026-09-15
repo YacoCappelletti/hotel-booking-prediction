@@ -1,26 +1,31 @@
-# Business Dashboard Documentation — Phase 7
+# Business Dashboard Documentation
 
-**Location:** `apps/dashboard/app.py` · **Port:** 8502 · **Framework:** Streamlit
+**Location:** `apps/dashboard/app.py` · **Port:** 8502 · **Framework:** Streamlit + Plotly
+
+![Dashboard](images/dashboard_screenshot.png)
 
 ## Purpose
 
 Executive view of the cancellation problem built on the dataset, structured to answer the three
 dashboard questions:
 
-1. **What happened?** — KPIs: bookings, cancellation rate, revenue at risk (EUR), average booking value.
-2. **Why did it happen?** — four evidence charts mirroring the Phase 5 business questions:
+1. **What happened?** — KPIs: bookings, cancellation rate, revenue at risk (EUR), average booking
+   value, and fulfilled-bookings revenue.
+2. **Why did it happen?** — interactive evidence charts mirroring the five business questions:
+   - Monthly lost revenue + cancellation rate (Q04: seasonal losses)
    - Cancellation rate by lead-time band (Q02: 10% → 74%)
    - Cancellation rate by market segment (Q03: Online risk concentration)
-   - Monthly lost revenue + cancellation rate (Q04: seasonal losses)
    - Cancellation rate by special requests (Q05: engagement is protective)
+   - Booking volume by arrival month (seasonality)
 3. **What should the business do?** — action table mapping each signal to its recommended action
    (deposits for long-lead, prepayment for online, seasonal buffers, engagement nudges, risk-score
    integration via the Predict app).
 
 ## Filters
 
-Sidebar filters by **arrival year**, **arrival month**, and **market segment**; all KPIs and charts
-recompute on the filtered data. Empty selections show a warning instead of errors.
+Sidebar filters by **arrival year**, **arrival month range** (slider), and **market segment**;
+all KPIs and charts recompute on the filtered data. Empty selections show a warning instead of
+errors.
 
 ## Data source
 

@@ -1,4 +1,4 @@
-# Business Questions — Phase 2
+# Business Questions
 
 ## 10 candidate business questions (all answerable with the dataset)
 
@@ -29,5 +29,3 @@
 - **Feasibility:** all five are answerable with existing columns, no external data required.
 - **Actionability:** each yields a concrete operational action (tiered reconfirmation, channel policies, seasonal buffers, engagement nudges).
 
-> Note (G1): this prioritization applies to **business questions only**. No target variable candidate
-> was ranked, selected, or proposed in this phase.

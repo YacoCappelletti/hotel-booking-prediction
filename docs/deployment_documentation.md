@@ -2,7 +2,7 @@
 
 ## Architecture
 
-Single Docker image (`hotel-booking-cancelations-predict`) built from one `Dockerfile`; the three
+Single Docker image (`hotel-booking-cancellation-prediction`) built from one `Dockerfile`; the three
 services differ only by their run command:
 
 | Service | Command | Port | Purpose |
@@ -27,7 +27,7 @@ make docker-down      # stop everything
 
 Or directly: `docker compose up --build`
 
-## Verification checklist (Gate 6)
+## Verification checklist
 
 1. `curl http://localhost:8000/health` → `{"status": "ok", ...}`
 2. `curl -X POST http://localhost:8000/v1/predict -H 'Content-Type: application/json' -d @docs/json/api_examples.json` (extract a request) → 200 with prediction
@@ -36,8 +36,8 @@ Or directly: `docker compose up --build`
 
 ## Environment variables
 
-See `.env.example`. In Docker, only `LOG_LEVEL` (api) and `API_URL` (apps) are set by compose;
-artifact paths are resolved relative to `/app` inside the image.
+In Docker, only `LOG_LEVEL` (api) and `API_URL` (predict-app) are set by compose; artifact paths
+are resolved relative to `/app` inside the image.
 
 ## Notes
 

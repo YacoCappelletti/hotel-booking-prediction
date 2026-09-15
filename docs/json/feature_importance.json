@@ -4,123 +4,123 @@
   "importance": [
     {
       "feature": "lead_time",
-      "importance_mean": 0.37281,
-      "importance_std": 0.0041
+      "importance_mean": 0.36966,
+      "importance_std": 0.00225
     },
     {
       "feature": "no_of_special_requests",
-      "importance_mean": 0.10049,
-      "importance_std": 0.00254
+      "importance_mean": 0.10894,
+      "importance_std": 0.00329
     },
     {
       "feature": "avg_price_per_room",
-      "importance_mean": 0.07514,
-      "importance_std": 0.00221
+      "importance_mean": 0.07617,
+      "importance_std": 0.00159
     },
     {
       "feature": "market_segment_type_Offline",
-      "importance_mean": 0.0108,
-      "importance_std": 0.00041
-    },
-    {
-      "feature": "no_of_weekend_nights",
-      "importance_mean": 0.00677,
-      "importance_std": 0.00068
-    },
-    {
-      "feature": "no_of_adults",
-      "importance_mean": 0.00556,
-      "importance_std": 0.00032
-    },
-    {
-      "feature": "required_car_parking_space",
-      "importance_mean": 0.00471,
-      "importance_std": 0.00092
+      "importance_mean": 0.00689,
+      "importance_std": 0.00061
     },
     {
       "feature": "market_segment_type_Online",
-      "importance_mean": 0.00426,
-      "importance_std": 0.00153
+      "importance_mean": 0.0066,
+      "importance_std": 0.00104
     },
     {
-      "feature": "no_of_week_nights",
-      "importance_mean": 0.0027,
-      "importance_std": 0.00059
+      "feature": "no_of_weekend_nights",
+      "importance_mean": 0.0062,
+      "importance_std": 0.00052
     },
     {
-      "feature": "room_type_reserved_Room_Type 1",
-      "importance_mean": 0.00156,
-      "importance_std": 0.00043
+      "feature": "no_of_adults",
+      "importance_mean": 0.0051,
+      "importance_std": 0.00048
     },
     {
-      "feature": "total_nights",
-      "importance_mean": 0.00119,
-      "importance_std": 0.00021
-    },
-    {
-      "feature": "no_of_previous_bookings_not_canceled",
-      "importance_mean": 0.00117,
-      "importance_std": 0.00045
-    },
-    {
-      "feature": "room_type_reserved_Room_Type 5",
-      "importance_mean": 0.00088,
-      "importance_std": 0.00016
-    },
-    {
-      "feature": "type_of_meal_plan_Not Selected",
-      "importance_mean": 0.00077,
-      "importance_std": 0.0004
+      "feature": "required_car_parking_space",
+      "importance_mean": 0.00427,
+      "importance_std": 0.0009
     },
     {
       "feature": "room_type_reserved_Room_Type 4",
-      "importance_mean": 0.00073,
-      "importance_std": 0.00018
+      "importance_mean": 0.00324,
+      "importance_std": 0.00054
     },
     {
-      "feature": "no_of_children",
-      "importance_mean": 0.00039,
-      "importance_std": 0.00014
+      "feature": "no_of_week_nights",
+      "importance_mean": 0.00314,
+      "importance_std": 0.00101
     },
     {
-      "feature": "type_of_meal_plan_Meal Plan 2",
-      "importance_mean": 0.00038,
-      "importance_std": 0.00015
-    },
-    {
-      "feature": "room_type_reserved_Room_Type 7",
-      "importance_mean": 0.00029,
-      "importance_std": 0.00014
-    },
-    {
-      "feature": "room_type_reserved_Room_Type 6",
-      "importance_mean": 0.00018,
-      "importance_std": 0.00011
-    },
-    {
-      "feature": "market_segment_type_Aviation",
-      "importance_mean": 0.00018,
-      "importance_std": 0.00019
-    },
-    {
-      "feature": "room_type_reserved_Room_Type 2",
-      "importance_mean": 0.00014,
-      "importance_std": 0.00012
-    },
-    {
-      "feature": "repeated_guest",
-      "importance_mean": 9e-05,
-      "importance_std": 6e-05
+      "feature": "arrival_month_sin",
+      "importance_mean": 0.00205,
+      "importance_std": 0.00053
     },
     {
       "feature": "market_segment_type_Corporate",
-      "importance_mean": 8e-05,
+      "importance_mean": 0.00113,
+      "importance_std": 0.00053
+    },
+    {
+      "feature": "room_type_reserved_Room_Type 1",
+      "importance_mean": 0.00104,
       "importance_std": 0.00037
     },
     {
+      "feature": "no_of_previous_bookings_not_canceled",
+      "importance_mean": 0.00044,
+      "importance_std": 0.00053
+    },
+    {
+      "feature": "type_of_meal_plan_Meal Plan 1",
+      "importance_mean": 0.00036,
+      "importance_std": 0.00015
+    },
+    {
+      "feature": "market_segment_type_Aviation",
+      "importance_mean": 0.00036,
+      "importance_std": 0.00018
+    },
+    {
+      "feature": "room_type_reserved_Room_Type 5",
+      "importance_mean": 0.00035,
+      "importance_std": 9e-05
+    },
+    {
+      "feature": "no_of_children",
+      "importance_mean": 0.00024,
+      "importance_std": 0.00017
+    },
+    {
+      "feature": "room_type_reserved_Room_Type 2",
+      "importance_mean": 0.00018,
+      "importance_std": 0.00016
+    },
+    {
+      "feature": "repeated_guest",
+      "importance_mean": 0.00012,
+      "importance_std": 0.0001
+    },
+    {
+      "feature": "room_type_reserved_Room_Type 6",
+      "importance_mean": 0.00011,
+      "importance_std": 0.0001
+    },
+    {
+      "feature": "type_of_meal_plan_Meal Plan 2",
+      "importance_mean": 6e-05,
+      "importance_std": 0.00017
+    },
+    {
       "feature": "room_type_reserved_Other",
-      "importance_mean": 1e-05,
-      "importance_std": 0.0
+      "importance_mean": 4e-05,
+      "importance_std": 1e-05
+    },
+    {
+      "feature": "room_type_reserved_Room_Type 7",
+      "importance_mean": 4e-05,
+      "importance_std": 0.00012
     },
     {
       "feature": "type_of_meal_plan_Other",
@@ -134,18 +134,23 @@
     },
     {
       "feature": "no_of_previous_cancellations",
-      "importance_mean": -0.00018,
-      "importance_std": 2e-05
+      "importance_mean": -0.00043,
+      "importance_std": 4e-05
     },
     {
-      "feature": "type_of_meal_plan_Meal Plan 1",
-      "importance_mean": -0.00022,
-      "importance_std": 0.00022
+      "feature": "total_nights",
+      "importance_mean": -0.00053,
+      "importance_std": 0.00014
     },
     {
-      "feature": "arrival_month",
-      "importance_mean": -0.0012,
-      "importance_std": 0.00066
+      "feature": "type_of_meal_plan_Not Selected",
+      "importance_mean": -0.00087,
+      "importance_std": 0.00019
+    },
+    {
+      "feature": "arrival_month_cos",
+      "importance_mean": -0.00096,
+      "importance_std": 0.00053
     }
   ]
 }

@@ -14,7 +14,6 @@
         "INN00003"
       ],
       "usable_as_feature": "no",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Unique identifier with no predictive signal; excluded by policy."
@@ -39,7 +38,6 @@
         "3"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known at booking time."
@@ -64,7 +62,6 @@
         "1"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known at booking time."
@@ -89,7 +86,6 @@
         "0"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known at booking time."
@@ -114,7 +110,6 @@
         "1"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known at booking time."
@@ -139,7 +134,6 @@
         "Meal Plan 2"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Selected at booking time."
@@ -163,7 +157,6 @@
         "1"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Requested at booking time."
@@ -188,7 +181,6 @@
         "Room_Type 2"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Chosen at booking time."
@@ -213,7 +205,6 @@
         "1"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Fully known at booking time."
@@ -237,7 +228,6 @@
         "2018"
       ],
       "usable_as_feature": "conditional",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known at booking time."
@@ -262,7 +252,6 @@
         "2"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known at booking time."
@@ -287,7 +276,6 @@
         "28"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known at booking time."
@@ -312,7 +300,6 @@
         "Corporate"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Assigned at booking time."
@@ -336,7 +323,6 @@
         "1"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "conditional",
         "reason": "Known at booking time for actual repeat guests; for new guests it is 0 by definition, which is valid at prediction time."
@@ -361,7 +347,6 @@
         "1"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "conditional",
         "reason": "Requires guest history lookup at prediction time; valid if history is available in production."
@@ -386,7 +371,6 @@
         "1"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "conditional",
         "reason": "Requires guest history lookup at prediction time; valid if history is available in production."
@@ -411,7 +395,6 @@
         "60.0"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known at booking time (quoted rate)."
@@ -436,7 +419,6 @@
         "3"
       ],
       "usable_as_feature": "yes",
-      "candidate_target_flag": "no",
       "leakage": {
         "potential": "no",
         "reason": "Known before arrival."
@@ -460,7 +442,6 @@
         "Canceled"
       ],
       "usable_as_feature": "no (outcome label)",
-      "candidate_target_flag": "yes (factual flag only \u2014 evaluation deferred to Phase 3)",
       "leakage": {
         "potential": "n/a",
         "reason": "This is the outcome label, not a feature."
