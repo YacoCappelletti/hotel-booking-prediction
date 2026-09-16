@@ -41,19 +41,6 @@ Details in the [model report](docs/model_report.md) and [model card](docs/model_
   average price, and final booking status (32.8% canceled).
 - Re-download from the source at any time with `make download-data` (uses `kagglehub`).
 
-## Architecture
-
-```mermaid
-flowchart LR
-    A[data/raw CSV] --> B[scripts/p1..p2<br/>audit + business analysis]
-    B --> C[configs/business_rules.json<br/>risk bands + cost matrix]
-    C --> D[scripts/p4<br/>training pipeline]
-    D --> E[models/*.joblib<br/>model + preprocessor + SHAP explainer]
-    E --> F[FastAPI<br/>/v1/predict]
-    F --> G[Streamlit predict app<br/>port 8501]
-    A --> H[Streamlit dashboard<br/>port 8502]
-```
-
 ## Quickstart
 
 ```bash
